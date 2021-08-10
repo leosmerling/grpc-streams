@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package grpc_streams;
+
+service GrpcStreams {
+    rpc Publish(stream Message) returns (stream Ack) {}
+
+    // rpc Consume(Stream) return (stream Message) {}
+}
+
+message Message {
+    string key = 1;
+    bytes payload = 2;
+}
+
+message Ack {
+    string key = 1;
+    uint64 offset = 2;
+}
