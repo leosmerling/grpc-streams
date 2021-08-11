@@ -231,6 +231,7 @@ dependencies = [
  "async-stream",
  "futures-core",
  "futures-util",
+ "lazy_static",
  "prost",
  "rand 0.7.3",
  "serde",

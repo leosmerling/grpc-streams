@@ -5,7 +5,7 @@ package grpc_streams;
 service GrpcStreams {
     rpc Publish(stream Message) returns (stream Ack) {}
 
-    // rpc Consume(Topic) return (stream Message) {}
+    rpc Consume(Consumer) returns (stream Message) {}
 }
 
 message Message {
@@ -17,4 +17,9 @@ message Message {
 message Ack {
     bytes key = 1;
     uint64 offset = 2;
+}
+
+message Consumer {
+    string topic = 1;
+    string group = 2;
 }

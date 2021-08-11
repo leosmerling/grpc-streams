@@ -19,6 +19,7 @@ serde_json = "1.0"
 rand = "0.7"
 
 sled = "0.34"
+lazy_static = "*"
 
 [build-dependencies]
 tonic-build = "0.5"
@@ -28,5 +29,9 @@ name = "grpcstreams-server"
 path = "src/server.rs"
 
 [[bin]]
-name = "grpcstreams-client"
-path = "src/client.rs"
+name = "grpcstreams-producer"
+path = "src/producer.rs"
+
+[[bin]]
+name = "grpcstreams-consumer"
+path = "src/consumer.rs"
