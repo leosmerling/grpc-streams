@@ -62,9 +62,10 @@ impl GrpcStreams for GrpcStreamsService {
     ) -> Result<Response<Self::ConsumeStream>, Status> {
 
         let output = async_stream::try_stream! {
-            let mut items = DB.scan_prefix(&[]);
-            while let Some(Ok((key, payload))) = items.next() {
+            let mut offset = format!("{:12}", 0).as_bytes().to_vec();
+            while let Ok(Some((key, payload))) = DB.get_gt(&offset) {
                 println!("Consuming {:?}: {:?}", key, payload);
+                offset = key.to_vec();
                 yield Message {
                     topic: "test-topic".to_string(),
                     key: key.to_vec(),
