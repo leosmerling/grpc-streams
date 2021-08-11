@@ -40,15 +40,14 @@ impl GrpcStreams for GrpcStreamsService {
         &self,
         _request: Request<tonic::Streaming<Message>>,
     ) -> Result<Response<Self::PublishStream>, Status> {
-        let topic = "test-topic".to_string();
         let mut stream = _request.into_inner();
         let output = async_stream::try_stream! {
             while let Some(msg) = stream.message().await? {
                 println!("Received {:?}", msg);
                 let id = DB.generate_id().unwrap();
-                DB.insert(format!("{}", id).as_bytes(), msg.payload.to_vec()).unwrap();
+                DB.insert(format!("{:12}", id).as_bytes(), msg.payload.to_vec()).unwrap();
                 yield Ack {
-                    key: format!("{}", id).as_bytes().to_vec(), //key.to_vec(),
+                    key: format!("{:12}", id).as_bytes().to_vec(), //key.to_vec(),
                     offset: id,
                 }
             }
