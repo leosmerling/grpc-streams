@@ -20,16 +20,14 @@ use tonic::transport::Channel;
 
 async fn publish_messages(client: &mut GrpcStreamsClient<Channel>) -> Result<(), Box<dyn std::error::Error>> {
 
-    let start = time::Instant::now();
-
     let outbound = async_stream::stream! {
         let mut interval = time::interval(Duration::from_secs(1));
 
-        while let time = interval.tick().await {
-            let elapsed = time.duration_since(start);
+        while let _ = interval.tick().await {
             let msg = Message {
-                key: "123".into(),
-                payload: "sample-message".into(),
+                topic: "test-topic".to_string(),
+                key: b"123".to_vec(),
+                payload: b"sample-message".to_vec(),
             };
             yield msg;
         }
